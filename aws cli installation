@@ -146,14 +146,23 @@ Replace the italicized parameter values with your own.
 You can get the ami Id’s from documentation or console for your required Instance.
 
 # aws ec2 run-instances --image-id <ami-Id> --count 1 --instance-type <type> --key-
-name <keypair-Name> --security-groups <security grp Name>
+name <keypair-Name> --security-groups <security grp Name ids>
 
-aws ec2 run-instances --image-id ami-0022f774911c1d690 --count 1 --instance-type t2.micro --key-name dataweave-dev-nvir --security-groups Ec2-dataweave
+#https://stackoverflow.com/questions/46604759/an-error-occurred-invalidparametervalue-when-calling-the-runinstances-operatio
+
+aws ec2 run-instances --image-id ami-0022f774911c1d690 --count 1 --instance-type t2.micro --key-name dataweave-dev-nvir --security-group-ids sg-003a55a2b3242872c	
+
+Add a tag to your Instance
+# aws ec2 create-tags --resources <Instance-Id> --tags Key=Name,Value=<value>
+
+aws ec2 create-tags --resources i-08d3f53694615866d --tags Key=Name,Value=dataweave-vm
 
 
-
-
-
+Terminate your Instance
+To delete an instance, you use the command aws ec2 terminate-instances to delete
+it.
+# aws ec2 terminate-instances --instance-ids <Instance-Id>
+aws ec2 terminate-instances --instance-ids i-08d3f53694615866d
 
 
 
