@@ -47,6 +47,76 @@ region = "us-east-1"
 output = "json"
 
 
+=============================
+
+->root@ip-172-31-22-92:~# aws sts get-caller-identity
+{
+    "UserId": "AIDAUMHZDA7YXKEDWXZ5X",
+    "Account": "301170100209",
+    "Arn": "arn:aws:iam::301170100209:user/aws-cli-user"
+}
+
+
+->aws ec2 describe-instances
+
+=================================================== ALL CLI commands :=======================================================
+
+https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html
+
+=========== CREATE KEYPAIR ===============
+https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/create-key-pair.html
+
+aws ec2 create-key-pair --key-name MyKeyPair
+
+Check:
+in keypair section of aws
+
+
+============ CREATE EC2 INSTANCES =============
+
+https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/index.html
+
+https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/run-instances.html
+
+Ex;
+aws ec2 run-instances \
+    --image-id ami-0abcdef1234567890 \
+    --instance-type t2.micro \
+    --key-name MyKeyPair
+    
+ 
+aws ec2 run-instances \
+    --image-id ami-0c4f7023847b90238 \
+    --instance-type t2.micro \
+    --key-name dataweave-dev-nvir
+ 
+
+check:
+
+check in ec2 instances "new vm will create"
+
+=============== keypair creation ================
+
+aws ec2 create-key-pair --key-name <keypair-Name> --query 'KeyMaterial' --output text > <keypair-Name.pem>
+
+Eg:
+
+aws ec2 create-key-pair --key-name vnd-dataweave --query 'KeyMaterial' --output text > vnd-dataweave.pem
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
