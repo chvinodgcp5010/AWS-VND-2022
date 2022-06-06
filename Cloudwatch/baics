@@ -20,6 +20,12 @@ You can use Amazon CloudWatch Logs to monitor, store, and access
 your log files from Amazon Elastic Compute Cloud (Amazon EC2) 
 instances , AWS CloudTrail, Route 53, and other sources.
 
+Note:
+
+By default every 5 mnts cloudwatch it fetch the details from aws resources.
+
+If you want detailed (every minute) you will need to enable detailed monitoring.
+
 
 =========================
 
