@@ -1,0 +1,13 @@
+useful to take backup and restore in the event of failure.
+
+Ex:
+once lose your data if you have snapshot already.
+snapshot will give you new volume with existind data.
+
+Snapshot Backup & Restore
+
+• Unmount partition
+• Detach volume
+• Create new volume from snapshot
+• Attach the volume created from snapshot
+• Mount it bac
