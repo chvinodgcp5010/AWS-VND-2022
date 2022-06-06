@@ -78,3 +78,34 @@ tmpfs           484M     0  484M   0% /sys/fs/cgroup
 /dev/loop4       44M   44M     0 100% /snap/snapd/15177
 tmpfs            97M     0   97M   0% /run/user/1000
 /dev/xvdf       9.8G  4.1G  5.3G  44% /vnd
+
+
+
+
+reboot vm and check mount exist or not
+
+
+df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       7.7G  1.7G  6.1G  22% /
+devtmpfs        478M     0  478M   0% /dev
+tmpfs           484M     0  484M   0% /dev/shm
+tmpfs            97M  832K   96M   1% /run
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           484M     0  484M   0% /sys/fs/cgroup
+/dev/loop0       27M   27M     0 100% /snap/amazon-ssm-agent/5163
+/dev/loop2       62M   62M     0 100% /snap/core20/1405
+/dev/loop1       56M   56M     0 100% /snap/core18/2344
+/dev/loop3       68M   68M     0 100% /snap/lxd/22753
+/dev/loop4       44M   44M     0 100% /snap/snapd/15177
+/dev/xvdf       9.8G  4.1G  5.3G  44% /vnd
+/dev/loop5       45M   45M     0 100% /snap/snapd/15904
+/dev/loop6       56M   56M     0 100% /snap/core18/2409
+/dev/loop7       62M   62M     0 100% /snap/core20/1494
+/dev/loop8       26M   26M     0 100% /snap/amazon-ssm-agent/5656
+tmpfs            97M     0   97M   0% /run/user/1000
+
+
+
+
+
