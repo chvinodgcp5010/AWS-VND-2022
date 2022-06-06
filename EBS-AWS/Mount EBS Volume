@@ -111,5 +111,23 @@ tmpfs            97M     0   97M   0% /run/user/1000
 
 
 
+-> umount /vnd
+
+-> detach volume and delete volume 
+->if not work stop the vm and delete volume.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
