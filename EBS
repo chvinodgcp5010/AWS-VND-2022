@@ -1,0 +1,140 @@
+ELASTIC BLOCK STORAGE
+
+★ Block based storage
+★ Runs ec2 OS, store data from db, file data, etc 
+★ Placed in specific AZ. Automatically replicated within the AZ to 
+protect from failure ( only with in az) if you want to replicate data in other AZ create snapshot and copy to other zone. Vm and EBS should be on same AZ.
+★ Snapshot is backup of a volume
+
+
+NOTE:
+VM and volume must be on same zone ( Vm (us-east-1a) Volume (us-east-1a))
+
+
+
+EBS Types:
+============
+
+● General Purpose (SSD) 
+○ Most Work Loads 
+
+● Provisioned IOPS 
+○ Large Databases 
+
+● Throughput Optimized HD 
+○ Big Data & Data Warehouses 
+
+● Cold HDD 
+○ File Servers 
+
+● Magnetic 
+○ Backups & Archive
+
+
+Ebs volume types:
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html
+
+HOW TO CREATE EXTRA VOLUME AND ADD 
+===================================
+
+Vm in (us-east-1a)
+EBS volume (us-east-1a)
+
+goto EBS and create it .
+
+once create an extra volume ( it will be in "available" state ) 
+
+volume -> attach volume ->instance -->
+
+check if EBS attached or not in EC2 instances.
+
+
+
+============================= HOW TO MOUNT EBS VOLUME =======================================
+
+We have created Volume and attached to VM instance and then "need to mount"  that created volume 
+==================================================================================================
+https://devopscube.com/mount-extra-disks-on-google-cloud/
+
+->lsblk
+
+xvda    202:0    0    8G  0 disk
+└─xvda1 202:1    0    8G  0 part /
+xvdf    202:80   0   10G  0 disk
+
+->mkfs.ext4 /dev/xvdf
+
+->mkdir -p /vnd
+
+->sudo mount -o discard,defaults /dev/xvdf /vnd
+
+->lsblk
+
+xvda    202:0    0    8G  0 disk
+└─xvda1 202:1    0    8G  0 part /
+xvdf    202:80   0   10G  0 disk /vnd                     #see here I am added xvdf volume to /vnd folder in VM
+
+chmod a+x vnd
+
+cp /etc/fstab /etc/fstab.backup
+
+
+
+sudo blkid -s UUID -o value /dev/xvdf
+
+echo UUID=`sudo blkid -s UUID -o value /dev/xvdf` /vnd ext4 discard,defaults,noatime,nofail 0 2 | sudo tee -a /etc/fstab
+
+cat /etc/fstab
+LABEL=cloudimg-rootfs   /        ext4   defaults,discard        0 1
+UUID=56a8c6a1-3181-457b-b2ad-7e4a9c00cce5 /vnd ext4 discard,defaults,noatime,nofail 0 2
+
+
+df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+/dev/root      ext4      7.7G  1.5G  6.3G  19% /
+devtmpfs       devtmpfs  478M     0  478M   0% /dev
+tmpfs          tmpfs     484M     0  484M   0% /dev/shm
+tmpfs          tmpfs      97M  828K   96M   1% /run
+tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
+tmpfs          tmpfs     484M     0  484M   0% /sys/fs/cgroup
+/dev/loop0     squashfs   27M   27M     0 100% /snap/amazon-ssm-agent/5163
+/dev/loop1     squashfs   56M   56M     0 100% /snap/core18/2344
+/dev/loop3     squashfs   68M   68M     0 100% /snap/lxd/22753
+/dev/loop2     squashfs   62M   62M     0 100% /snap/core20/1405
+/dev/loop4     squashfs   44M   44M     0 100% /snap/snapd/15177
+tmpfs          tmpfs      97M     0   97M   0% /run/user/1000
+/dev/xvdf      ext4      9.8G   37M  9.3G   1% /vnd
+
+Create a larget file and check its mounting or not
+===================================================
+
+cd /vnd
+
+->fallocate -l 4G gentoo_root.img
+
+
+df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       7.7G  1.5G  6.3G  19% /
+devtmpfs        478M     0  478M   0% /dev
+tmpfs           484M     0  484M   0% /dev/shm
+tmpfs            97M  828K   96M   1% /run
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           484M     0  484M   0% /sys/fs/cgroup
+/dev/loop0       27M   27M     0 100% /snap/amazon-ssm-agent/5163
+/dev/loop1       56M   56M     0 100% /snap/core18/2344
+/dev/loop3       68M   68M     0 100% /snap/lxd/22753
+/dev/loop2       62M   62M     0 100% /snap/core20/1405
+/dev/loop4       44M   44M     0 100% /snap/snapd/15177
+tmpfs            97M     0   97M   0% /run/user/1000
+/dev/xvdf       9.8G  4.1G  5.3G  44% /vnd
+
+
+
+
+
+
+
+
+
