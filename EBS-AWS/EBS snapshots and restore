@@ -11,3 +11,15 @@ Snapshot Backup & Restore
 • Create new volume from snapshot
 • Attach the volume created from snapshot
 • Mount it bac
+
+
+====
+create volume 5 G and attach to VM
+->fdisk -l
+
+attach and mount it 
+
+from volume --> take snapshot 
+
+once done "detach volume" -> create volume from "snapshot" -> add to VM instance 
+
