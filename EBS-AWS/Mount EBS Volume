@@ -38,6 +38,8 @@ xvdf    202:80   0   10G  0 disk /vnd                     #see here I am added x
 LABEL=cloudimg-rootfs   /        ext4   defaults,discard        0 1
 UUID=56a8c6a1-3181-457b-b2ad-7e4a9c00cce5 /vnd ext4 discard,defaults,noatime,nofail 0 2
 
+-> mount -a                            //if all right its good otherwise it through an error
+
 
 ->df -hT
 Filesystem     Type      Size  Used Avail Use% Mounted on
