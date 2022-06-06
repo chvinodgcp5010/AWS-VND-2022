@@ -1,0 +1,76 @@
+https://docs.aws.amazon.com/elasticloadbalancing/
+
+create 2 instances using "userdata" (userdatascript.sh)
+ports: 22 , 80 ( MyIP )
+port: 80 for security group of lb 
+
+check ip you will get web access or not
+
+================================= Loadbalancer ===============================
+create target group -> instances ->
+
+Target group name
+
+protocol: http
+port: 80
+
+Protocol version: http
+
+Health checks: HTTP 
+Heatchcheck path: /              (here / like <ip>:80/) if you need other path from / you can mention <ip>:80/var/www/ -->mention like /var/www/
+
+
+Click on -->Next
+
+Available instances
+Port: 80
+
+click "include as pending below"  --> create target group
+
+
+
+=================================  create loadbalancer =====================================
+
+application lb -->Load balancer name "lb-00"
+Internet-facing
+IPv4
+
+VPC:  "somevpc"
+Mapping with subnets: select all 
+
+secuirty group:
+allow httpd --> 0.0.0.0/0 ( anywhere ) -----> end user need to access lb so enable outside.
+
+Listeners and routing :
+
+( frontend )
+protocol: http
+port:80                  forward to "target group"
+
+Create "loadbalancer"
+
+========= validate with lb url =============
+
+and check if target group are healthy or not , if not check  check security group of instance and lb 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
