@@ -1,1 +1,62 @@
+Cloud Watch - Monitor performance of AWS environment - standard 
+infrastructure metrics.
+
+● Metrics:
+AWS cloud watch allows. you to record metrics for services such as EBS, 
+EC2, ELB, Route53 Health checks, RDS, Amazon S3, cloudfront etc etc…
+
+● Events:
+ AWS Events delivers a near real-time stream of system events that 
+describe changes in Amazon Web Services (AWS) resources.
+
+eg: launching an ec2 instance
+deleting instance 
+taking snapshot/ creating volume 
+
+cloudwatch capture all events -> to triggers with events using lambda fns.
+
+● Logs: 
+You can use Amazon CloudWatch Logs to monitor, store, and access 
+your log files from Amazon Elastic Compute Cloud (Amazon EC2) 
+instances , AWS CloudTrail, Route 53, and other sources.
+
+
+=========================
+
+Alarm monitors CloudWatch metrics for Instances.
+
+Simple Notification Service (Amazon SNS) is a web service that 
+coordinates and manages the delivery or sending of messages to 
+subscribing endpoints or clients.
+
+
+EC2 instance --> create alarm(cloudwatch) -->alarm --> alarm triggered -->SNS (Emain notification)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
