@@ -60,6 +60,8 @@ Create a larget file and check its mounting or not
 
 ->cd /vnd
 
+https://stackoverflow.com/questions/257844/quickly-create-a-large-file-on-a-linux-system
+
 ->fallocate -l 4G gentoo_root.img
 
 
