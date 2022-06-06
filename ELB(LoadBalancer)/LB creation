@@ -49,13 +49,28 @@ Listeners and routing :
 
 ( frontend )
 protocol: http
-port:80                  forward to "target group"
+port:80                  forward to "target group"  --->backend
 
 Create "loadbalancer"
 
 ========= validate with lb url =============
 
+504 gateway timeout -->5XX error means "server side error"
+
+sth b/w lb and instance is some issue (heck security group of instance and lb )
+
 and check if target group are healthy or not , if not check  check security group of instance and lb 
+
+in instance sg: you need to allow from "lb security group"
+
+
+check target group -> targets status 
+
+Note:
+
+if any maintenance for any instance "simply deregister" from lb and add once done regsiter back in target group.
+
+
 
 
 
