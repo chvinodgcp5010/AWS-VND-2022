@@ -6,6 +6,11 @@ port: 80 for security group of lb
 
 check ip you will get web access or not
 
+create VM and create image from it ( custom AMI ) and use for remaining
+
+instead of creating 1 by 1 vm instance --> provide all in 1 instance template and use that while deploying vm
+
+
 ================================= Target group  ===============================
 create target group -> instances ->
 
