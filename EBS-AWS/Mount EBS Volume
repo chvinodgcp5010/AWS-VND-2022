@@ -10,29 +10,63 @@ https://devopscube.com/mount-extra-disks-on-google-cloud/
 
 xvda    202:0    0    8G  0 disk
 └─xvda1 202:1    0    8G  0 part /
-xvdf    202:80   0   10G  0 disk
+xvdf    202:80   0   5G  0 disk
 
-->mkfs.ext4 /dev/xvdf
+https://phoenixnap.com/kb/linux-create-partition
+
+Partition:
+==========
+
+->lsblk
+NAME    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0    8G  0 disk
+└─xvda1 202:1    0    8G  0 part /
+xvdf    202:80   0    5G  0 disk
+
+->fdisk /dev/xvdf
+m
+n
+p
+1
+enter
+enter
++3G
+
+w ( save )
+
+->fdisk -l
+
+Disk /dev/xvdf: 5 GiB, 5368709120 bytes, 10485760 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x27d16ea6
+
+Device     Boot Start     End Sectors Size Id Type
+/dev/xvdf1       2048 6293503 6291456   3G 83 Linux
+
+
+->mkfs.ext4 /dev/xvdf1
 
 ->mkdir -p /vnd
 
-->sudo mount -o discard,defaults /dev/xvdf /vnd
+->sudo mount -o discard,defaults /dev/xvdf1 /vnd
 
 ->lsblk
 
 xvda    202:0    0    8G  0 disk
 └─xvda1 202:1    0    8G  0 part /
-xvdf    202:80   0   10G  0 disk /vnd                     #see here I am added xvdf volume to /vnd folder in VM
+xvdf    202:80   0    5G  0 disk
+└─xvdf1 202:81   0    3G  0 part /vnd                       #see here I am added xvdf volume to /vnd folder in VM
 
 ->chmod a+x vnd
 
 ->cp /etc/fstab /etc/fstab.backup
 
+->sudo blkid -s UUID -o value /dev/xvdf1
 
-
-->sudo blkid -s UUID -o value /dev/xvdf
-
-->echo UUID=`sudo blkid -s UUID -o value /dev/xvdf` /vnd ext4 discard,defaults,noatime,nofail 0 2 | sudo tee -a /etc/fstab
+->echo UUID=`sudo blkid -s UUID -o value /dev/xvdf1` /vnd ext4 discard,defaults,noatime,nofail 0 2 | sudo tee -a /etc/fstab
 
 ->cat /etc/fstab
 LABEL=cloudimg-rootfs   /        ext4   defaults,discard        0 1
@@ -40,61 +74,26 @@ UUID=56a8c6a1-3181-457b-b2ad-7e4a9c00cce5 /vnd ext4 discard,defaults,noatime,nof
 
 -> mount -a                            //if all right its good otherwise it through an error
 
-
 ->df -hT
 Filesystem     Type      Size  Used Avail Use% Mounted on
 /dev/root      ext4      7.7G  1.5G  6.3G  19% /
-devtmpfs       devtmpfs  478M     0  478M   0% /dev
-tmpfs          tmpfs     484M     0  484M   0% /dev/shm
-tmpfs          tmpfs      97M  828K   96M   1% /run
-tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
-tmpfs          tmpfs     484M     0  484M   0% /sys/fs/cgroup
-/dev/loop0     squashfs   27M   27M     0 100% /snap/amazon-ssm-agent/5163
-/dev/loop1     squashfs   56M   56M     0 100% /snap/core18/2344
-/dev/loop3     squashfs   68M   68M     0 100% /snap/lxd/22753
-/dev/loop2     squashfs   62M   62M     0 100% /snap/core20/1405
-/dev/loop4     squashfs   44M   44M     0 100% /snap/snapd/15177
-tmpfs          tmpfs      97M     0   97M   0% /run/user/1000
-/dev/xvdf      ext4      9.8G   37M  9.3G   1% /vnd
+/dev/xvdf1     ext4      2.9G  9.0M  2.8G   1% /vnd
+
 
 Create a larget file and check its mounting or not
 ===================================================
-
 ->cd /vnd
 
 https://stackoverflow.com/questions/257844/quickly-create-a-large-file-on-a-linux-system
 
 ->fallocate -l 4G gentoo_root.img
 
-
 ->df -h
-Filesystem      Size  Used Avail Use% Mounted on
-/dev/root       7.7G  1.5G  6.3G  19% /
-devtmpfs        478M     0  478M   0% /dev
-tmpfs           484M     0  484M   0% /dev/shm
-tmpfs            97M  828K   96M   1% /run
-tmpfs           5.0M     0  5.0M   0% /run/lock
-tmpfs           484M     0  484M   0% /sys/fs/cgroup
-/dev/loop0       27M   27M     0 100% /snap/amazon-ssm-agent/5163
-/dev/loop1       56M   56M     0 100% /snap/core18/2344
-/dev/loop3       68M   68M     0 100% /snap/lxd/22753
-/dev/loop2       62M   62M     0 100% /snap/core20/1405
-/dev/loop4       44M   44M     0 100% /snap/snapd/15177
-tmpfs            97M     0   97M   0% /run/user/1000
-/dev/xvdf       9.8G  4.1G  5.3G  44% /vnd
-
-
-
-
-reboot vm and check mount exist or not
-
-
-df -h
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/root       7.7G  1.7G  6.1G  22% /
 devtmpfs        478M     0  478M   0% /dev
 tmpfs           484M     0  484M   0% /dev/shm
-tmpfs            97M  832K   96M   1% /run
+tmpfs            97M  848K   96M   1% /run
 tmpfs           5.0M     0  5.0M   0% /run/lock
 tmpfs           484M     0  484M   0% /sys/fs/cgroup
 /dev/loop0       27M   27M     0 100% /snap/amazon-ssm-agent/5163
@@ -102,18 +101,39 @@ tmpfs           484M     0  484M   0% /sys/fs/cgroup
 /dev/loop1       56M   56M     0 100% /snap/core18/2344
 /dev/loop3       68M   68M     0 100% /snap/lxd/22753
 /dev/loop4       44M   44M     0 100% /snap/snapd/15177
-/dev/xvdf       9.8G  4.1G  5.3G  44% /vnd
 /dev/loop5       45M   45M     0 100% /snap/snapd/15904
 /dev/loop6       56M   56M     0 100% /snap/core18/2409
 /dev/loop7       62M   62M     0 100% /snap/core20/1494
 /dev/loop8       26M   26M     0 100% /snap/amazon-ssm-agent/5656
 tmpfs            97M     0   97M   0% /run/user/1000
+/dev/xvdf1      2.9G  2.9G     0 100% /vnd
+
+->reboot vm and check mount exist or not
+
+->df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       7.7G  1.7G  6.1G  22% /
+devtmpfs        478M     0  478M   0% /dev
+tmpfs           484M     0  484M   0% /dev/shm
+tmpfs            97M  848K   96M   1% /run
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs           484M     0  484M   0% /sys/fs/cgroup
+/dev/loop0       27M   27M     0 100% /snap/amazon-ssm-agent/5163
+/dev/loop2       62M   62M     0 100% /snap/core20/1405
+/dev/loop1       56M   56M     0 100% /snap/core18/2344
+/dev/loop3       68M   68M     0 100% /snap/lxd/22753
+/dev/loop4       44M   44M     0 100% /snap/snapd/15177
+/dev/loop5       45M   45M     0 100% /snap/snapd/15904
+/dev/loop6       56M   56M     0 100% /snap/core18/2409
+/dev/loop7       62M   62M     0 100% /snap/core20/1494
+/dev/loop8       26M   26M     0 100% /snap/amazon-ssm-agent/5656
+tmpfs            97M     0   97M   0% /run/user/1000
+/dev/xvdf1      2.9G  2.9G     0 100% /vnd
 
 
+->umount /vnd
 
--> umount /vnd
-
--> detach volume and delete volume 
+->detach volume and delete volume 
 ->if not work stop the vm and delete volume.
 
 
