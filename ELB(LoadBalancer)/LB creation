@@ -6,7 +6,7 @@ port: 80 for security group of lb
 
 check ip you will get web access or not
 
-================================= Loadbalancer ===============================
+================================= Target group  ===============================
 create target group -> instances ->
 
 Target group name
@@ -36,8 +36,7 @@ Internet-facing
 IPv4
 
 VPC:  "somevpc"
-Mapping with subnets: select all 
-
+Mapping with subnets: min 2 ( for high availability )
 secuirty group:
 allow httpd --> 0.0.0.0/0 ( anywhere ) -----> end user need to access lb so enable outside.
 
