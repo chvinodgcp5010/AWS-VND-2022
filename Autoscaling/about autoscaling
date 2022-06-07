@@ -168,6 +168,20 @@ create autoscaling sg
 
 check lb dns it redirect to 2 vm or not 
 
+install stress 
+
+#Amazon Linux 2
+sudo amazon-linux-extras install epel -y
+sudo yum install stress -y
+
+
+INCREASE CPU LOAD AND CHECK IN "CLOUD WATCH" ----> IN ALARM STATE ( HIGH CPU LOAD) 
+
+load increase command in VM:
+
+dd if=/dev/zero of=/dev/null
+
+it will create the nodes up to maximum mentioned in scaling group 
 
 
 
