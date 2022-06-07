@@ -11,10 +11,10 @@ create VM and create image from it ( custom AMI ) and use for remaining
 instead of creating 1 by 1 vm instance --> provide all in 1 instance template and use that while deploying vm
 
 
-================================= Target group  ===============================
-create target group -> instances ->
+================================= CREATE Target group  ===============================
+create target group -> Choose a target type --> instances ->
 
-Target group name
+Target group name : dataweave-tg
 
 protocol: http
 port: 80
