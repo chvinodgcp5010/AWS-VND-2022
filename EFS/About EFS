@@ -1,0 +1,18 @@
+If you need shared storage "can go for EFS"
+
+you can mount Efs file system in to any directory in to your OS.
+
+it is scalable , elastic ,cheap
+
+cluster of data to store in once centralised system " use EFS" just like EBS but EBS mount only 1 instance at a time. EFS for multiple filesystem
+( shared file system)
+
+https://us-east-1.console.aws.amazon.com/efs/home?region=us-east-1#/get-started
+https://docs.aws.amazon.com/efs/latest/ug/efs-ug.pdf
+
+Use:
+1.appn and development ( store from all ec2 images to centralized area )
+2.database backups
+
+Web service ( Ec2 VM ) all images to store in EFS (centralised location)
+
