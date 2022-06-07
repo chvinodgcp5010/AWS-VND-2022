@@ -52,6 +52,102 @@ Note: Numbers may be suffixed with s,m,h,d,y (time) or B,K,M,G (size).
 
 ==========================================================
 
+On vm instance add some stress on cpu 
+
+
+stress -c 4 
+
+stress -c 4  --> it run 4 processes and run it for 300 secs
+put the command on background nohup stress -c 4 -t 300 &
+
+=>nohup stress -c 4 -t 300 &
+
+check o/p of processes using "top" command
+
+=>top
+
+top - 06:50:28 up  1:41,  1 user,  load average: 7.34, 3.58, 1.46
+Tasks: 113 total,   9 running,  61 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 99.7 us,  0.3 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+
+
+ 4341 root      20   0    7576    100      0 R 12.5  0.0   0:03.68 stress
+ 4332 root      20   0    7576    100      0 R  6.2  0.0   0:09.00 stress
+ 4334 root      20   0    7576    100      0 R  6.2  0.0   0:09.00 stress
+ 4339 root      20   0    7576    100      0 R  6.2  0.0   0:03.67 stress
+
+
+Above it shows %cpu 99.7% and increasing load average as well.
+---------------------------------------------------------------
+
+Continuously stressing instance and cloudwatch will check it every mnt and put that in graph.
+
+run for some time and sleep for sometime you will get good graph.
+
+Scripte:
+
+=>vi stress.sh
+stress -c 4 -t 60 && sleep 60 && stress -c 4 -t 60 && sleep 60 && stress -c 4 -t 360 && sleep  && stress -c 4 -t 460 && sleep 30 && stress -c 4 -t 360 && sleep 60
+
+=>nohup ./stress.sh &
+
+
+
+============================= Cloudwatch ========================================
+
+cloud watch --> create alaram --> Select metric -->Ec2 --> pre instance metrics
+
+select instance --> cpu utilisation
+
+condtions -> static 
+Whenever CPUUtilization is  >70 --next
+
+Alarm state trigger -> in alarm
+Create new topic :  web-00_sns
+mail: <mail@gmail.com>
+
+
+EC2 action:  alarm ( if >70%)
+Take the following action... : stop the instance 
+
+Next 
+
+alarm name: Critical -  High CPU - web-00  --> Next --> create
+
+Note:
+confirm subscription while login to gmail and confirm 
+
+
+======================= Add some stress on vm and check ============================
+=>vi stress.sh
+stress -c 4 -t 60 && sleep 60 && stress -c 4 -t 60 && sleep 60 && stress -c 4 -t 360 && sleep  && stress -c 4 -t 460 && sleep 30 && stress -c 4 -t 360 && sleep 60
+
+
+nohup ./stress.sh &
+
+Once it reaches to 70% cpu as per the alert it will send a mail from SNS 
+
+Mail:
+------
+AWS Notifications <no-reply@sns.amazonaws.com>
+1:24 PM (5 minutes ago)
+to me
+
+You are receiving this email because your Amazon CloudWatch Alarm "Critical -  High CPU - web-00" in the US East (N. Virginia) region has entered the ALARM state, because "Threshold Crossed: 1 out of the last 1 datapoints [73.5593220338983 (07/06/22 07:52:00)] was greater than or equal to the threshold (60.0) (minimum 1 datapoint for OK -> ALARM transition)." at "Tuesday 07 June, 2022 07:54:09 UTC".
+
+View this alarm in the AWS Management Console:
+
+Goto cloudwatch --> alarm --> In alarm
+
+
+
+
+
+
+
+
+
+
 
 
 
