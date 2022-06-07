@@ -14,5 +14,92 @@ Use:
 1.appn and development ( store from all ec2 images to centralized area )
 2.database backups
 
-Web service ( Ec2 VM ) all images to store in EFS (centralised location)
+Web service ( Ec2 VM ) all images to store in EFS (centralised location) ---> dynamic website
+
+=========================================== EFS ====================================================
+scenario:
+
+Lets say we have cluster of web servers all will upload images to store in to the centralised from EC2 to efs.
+
+I have a web servesr I need to store the images from specific folder to "central location" EFS .When multiple instances will store the data 
+into same directory images data will sync on all servers.
+
+
+First create a security group : 
+------------------------------
+Efs-sg
+open port:  NFS       2047     allow from : security group of ec2 instance added 
+
+https://computingforgeeks.com/mount-aws-efs-file-system-on-ec2/
+
+EFS:
+---
+dataweave-efs --->next 
+
+VPC:
+availabilty zone --> subnet --> security group ( Efs-sg ) -->next --> create
+
+
+==================
+https://docs.aws.amazon.com/efs/latest/ug/installing-amazon-efs-utils.html
+
+click on :
+
+Select Mount via DNS or Mount via IP. Should you have a VPC with DNS hostnames disabled, select the mount via IP option.
+Click User guide to get the guide on how to Install the mount helper. The amazon-efs-utils package. For example, 
+for a Linux instance, run the below command to install the mount helper.
+
+
+To install the amazon-efs-utils package on Amazon Linux 2 and Amazon Linux
+
+yum update -y
+yum install -y amazon-efs-utils -y
+
+
+Next steps
+After installing amazon-efs-utils on your EC2 instance, proceed to the next steps for mounting your file system:
+
+Mount filesystem:
+==================
+
+https://docs.aws.amazon.com/efs/latest/ug/mounting-fs.html
+https://docs.aws.amazon.com/efs/latest/ug/efs-mount-helper.html
+https://docs.aws.amazon.com/efs/latest/ug/mounting-fs-mount-helper-ec2-linux.html
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
