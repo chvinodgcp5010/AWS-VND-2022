@@ -1,1 +1,68 @@
+If you know EC2 and cloudwatch  you will understand Autoscaling easily
+
+=>Auto Scaling is a service that automatically monitors and 
+adjusts compute resources to maintain performance for 
+applications hosted in the AWS.
+
+=>Alarm monitors CloudWatch metrics for Instance
+
+Note:
+
+=>Autoscaling group integrate with cloudwatch it monitor resources on particular metric you have selected.
+cpu usage
+
+eg: cpu reaches a particular threshold  ==> it can adjust the capacity based on cloud watch alarm(increase / descrease vm's)
+
+=>while creating autoscaling group you also have to create cloudwatch alarms to add/remove capacity 
+
+adding capacity:  to maintain performance
+removing : to maintain cost
+
+A launch configuration/Template 
+----------------------------------
+=>is an instance configuration template that an 
+Auto Scaling group uses to launch EC2 instances.
+
+
+Scaling policy:: 
+-----------------
+=>is used to increase and decrease the number of 
+running instances in the group dynamically to meet changing 
+conditions.
+
+step 
+scaling 
+
+cpu >60   --> add 2 instance
+cpu >80 --> add 4 instances
+
+
+Autoscaling group ( launch template ) --> alarm (cloudwatch) --> scaling policy --> instances
+
+======================================== hands on ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
