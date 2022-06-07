@@ -37,12 +37,136 @@ cpu >60   --> add 2 instance
 cpu >80 --> add 4 instances
 
 
+============================================ Image craeation =======================================
+
+Install apache2
+
+#!/bin/bash
+yum update -y
+yum install -y httpd.x86_64
+systemctl start httpd.service
+systemctl enable httpd.service
+echo “Hello World from $(hostname -f)” > /var/www/html/index.html
+
+
+create ec2 instance using above user data and ----> using VM create a "image"
+use the image in launch configuration.
+
 Autoscaling group ( launch template ) --> alarm (cloudwatch) --> scaling policy --> instances
 
-======================================== hands on ========================================
+======================================== hands on AUTOSCALING========================================
+
+1. Create target group with 0 instances
+2. Create LB
+3. create launch configuration
+4. create autoscaling
+
+1. Create target group:
+==========================
+
+Choose a target type:  Instances
+Target group name:  dataweave-target
+protocol: http
+port: 80
+vpc: default
+Protocol version: http1
+
+Health checks:
+
+Health check protocol: http
+Health check path: /
+
+Advanced health check settings
+set as default 
+
+Next ---> create Target group
 
 
+2. Create LB
+=============
 
+click on "application loadbalancer"
+
+Load balancer name:  dataweave-alb
+Mappings:  (select all zone for HA)
+
+Security groups:
+---------------
+create a Sg          -> "alb-sg"
+open port: HTTP     80    for     anywhere 0.0.0.0/0          --> Need to access everyone so 0.0.0.0/0
+
+Listeners and routing: 
+-----------------------
+Protocol :HTTP
+port: 80
+Default action: (Forward to) --> dataweave-tg (target group)
+
+Create LB
+
+
+3. create launch configuration
+===============================
+Launch configuration name : Dataweave-lconfig
+Amazon machine image (AMI): ubuntu 
+Instance type :             t2.micro
+
+Security groups: 
+       SSH 22 MYIP
+       HTTP   80  from alb-sg  (security group of ALB)   # need to add here for Ec2 instance
+       HTTP   80 MYIP
+
+select keypair --> acknowledge --> launch configuation
+
+
+4. create autoscaling group:
+=============================
+Auto Scaling group name: dataweave-asg
+swtich to launch config:  Dataweave-lconfig
+
+Next
+
+VPC: select
+AZ: select few for HA
+
+Next
+
+attach to existing lb --> Choose from your load balancer target groups
+Existing load balancer target groups --> "dataweave-target"
+
+Health checks - optional:
+click on ELB
+
+NEXT
+
+Group size - optional
+Desired capacity : 2
+Minimum capacity : 1
+Maximum capacity: 4
+
+Scaling policies - optional: 
+===========================
+Target tracking scaling policy :
+
+Metric type: avg cpu utilisation >50 
+
+NEXT
+
+Add notification:
+================
+
+create sns topic
+
+
+NEXT
+
+NExt
+
+create autoscaling sg
+
+
+============================= validate =====================================
+
+check lb dns it redirect to 2 vm or not 
 
 
 
