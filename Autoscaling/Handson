@@ -1,0 +1,59 @@
+Check in ASG and target group of ALB "up" or not 
+
+autoscaling group --> instance management -->  have few option "set standby" during patching or sth 
+scaling protection -> dont get this instance to terminate
+
+================================= ??????????????????????? ===================================
+
+How do you make changes to these instances
+
+"when autoscaling" vm instances will be dynamic (delete and create automatically by ASG) 
+and launch from "template"
+
+It will delete the instances --> when its launch it will launch from "AMI" from launch template.
+Manually we can upgrade the instance but while "recreation" of ASG it will launch from "old AMI"
+So all changes will going through "launch template" or laucn config.
+
+all changes will going through "launch template":
+------------------------------------------------
+like  Instance group chanage --> instance type change - SG change - instance level change any 
+
+Need to create new AMI --> new lauch template or config (or) --> create version of new launch template.
+
+============================== What If you want to update with new code =====================================
+
+Goto 
+
+ASG --> Launch configuration -->Edit
+
+under:
+Launch configuration --> select "new launch config or template" ( created from new AMI ) of new code.  
+
+Note:
+====
+Whenever you make change or update it will not automatic changes to the instance . you need to go "instance refresh"
+
+to change instance --> click on --> start instance refresh
+
+"start instance refresh" ==> means terminate the existing instance and recreate new instance from existing or new launch template.
+( lauch config or launch template )
+
+Refresh settings
+Minimum healthy percentage
+At least this percentage of the desired capacity of the Auto Scaling group must remain healthy during this operation to allow it 
+to continue.
+
+======================\NOTE \=============================
+
+For each and every "scaling (up/down) it trigger a "alert" "inAlarm" and send SNS notification and scale the instances.
+
+
+
+
+
+
+
+
+
+
+
