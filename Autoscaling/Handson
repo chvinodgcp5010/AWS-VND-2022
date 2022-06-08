@@ -1,3 +1,35 @@
+Process:
+
+1.create target group
+2.create lb while attach "target group"
+3.create launch template or config
+4. create asg
+
+
+asg have sg:
+0.0.0.0/0 anywhere
+
+laucnh config have sg of 
+ssh 22 Myip
+http 80 Myip
+http 80  sg of lb
+
+================
+
+once autoscaling is done it create instances in aws instances.
+check same asg (activity or instance management 0
+or
+check in target group if it healthy or not ( if not check sg)
+
+Q) how to update the code?
+if you need to change code , goto ASG --> edit --> change template or configuration (with new AMI) --> click on "instance refresh"
+
+you will get new code ( old vm vanish and new vm will takes place.)
+
+
+===============================================================
+From previous slide 
+
 Check in ASG and target group of ALB "up" or not 
 
 autoscaling group --> instance management -->  have few option "set standby" during patching or sth 
