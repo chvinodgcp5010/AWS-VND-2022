@@ -46,13 +46,18 @@ yum update -y
 yum install -y httpd.x86_64
 systemctl start httpd.service
 systemctl enable httpd.service
-echo “Hello World from $(hostname -f)” > /var/www/html/index.html
+#echo “Hello World from $(hostname -f)” > /var/www/html/index.html
 
 
 create ec2 instance using above user data and ----> using VM create a "image"
 use the image in launch configuration.
 
 Autoscaling group ( launch template ) --> alarm (cloudwatch) --> scaling policy --> instances
+
+launch configuration: 
+-------------------
+
+Give image above created from ec2 instgance and create autoscaling.
 
 ======================================== hands on AUTOSCALING========================================
 
@@ -74,7 +79,7 @@ Protocol version: http1
 Health checks:
 
 Health check protocol: http
-Health check path: /
+Health check path: /             (here / like <ip>:80/) if you need other path from / you can mention <ip>:80/var/www/ -->mention like /var/www/
 
 Advanced health check settings
 set as default 
