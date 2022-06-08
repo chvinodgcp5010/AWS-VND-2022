@@ -39,20 +39,23 @@ cpu >80 --> add 4 instances
 
 ============================================ Image craeation =======================================
 
-Install apache2
+Install apache2 using "user data" on Vm instance > first create istance --> install httpd and all below 
+create image from that VM and use image on "Autoscaling launch configuration"
 
 #!/bin/bash
 yum update -y
 yum install -y httpd.x86_64
 systemctl start httpd.service
 systemctl enable httpd.service
-#echo “Hello World from $(hostname -f)” > /var/www/html/index.html
+echo “Hello World from $(hostname -f)” > /var/www/html/index.html
 
 
 create ec2 instance using above user data and ----> using VM create a "image"
 use the image in launch configuration.
 
-Autoscaling group ( launch template ) --> alarm (cloudwatch) --> scaling policy --> instances
+Flow diagram:
+-------------
+Autoscaling group ( launch template/launch configuration ) --> alarm (cloudwatch) --> scaling policy --> instances
 
 launch configuration: 
 -------------------
@@ -98,7 +101,7 @@ Mappings:  (select all zone for HA)
 Security groups:
 ---------------
 create a Sg          -> "alb-sg"
-open port: HTTP     80    for     anywhere 0.0.0.0/0          --> Need to access everyone so 0.0.0.0/0
+open port: HTTP          80    for     anywhere 0.0.0.0/0          --> Need to access everyone so 0.0.0.0/0
 
 Listeners and routing: 
 -----------------------
@@ -117,7 +120,7 @@ Instance type :             t2.micro
 
 Security groups: 
        SSH 22 MYIP
-       HTTP   80  from alb-sg  (security group of ALB)   # need to add here for Ec2 instance
+       HTTP   80  from alb-sg  (security group of ALB)   # need to add here  Ec2 instance in order to access from LB. 
        HTTP   80 MYIP
 
 select keypair --> acknowledge --> launch configuation
@@ -169,16 +172,38 @@ NExt
 create autoscaling sg
 
 
-============================= validate =====================================
+============================= Validate =====================================
 
-check lb dns it redirect to 2 vm or not 
+Check in ASG:
+-------------
+instance management ( both are inservice ( up ) or not )
 
-install stress 
+check in tragets all vm's in lb are healty or not 
+
+if not check security group
+
+check lb dns it redirect to 2 vm index.html or not 
+
+connect 2 vm's and copy for easy understanding of lb working or not
+
+vm1:
+echo "hello vnd" >> /var/www/html/index.html
+
+vm2:
+echo "hello dataweave" >> /var/www/html/index.html
+
+-->
+Hit lb url it redirect to 2 html files ( instances ) or not
+
+
+
+========================= How to check autoscaling working proper or not =================================
+
+Install stress on 1 vm
 
 #Amazon Linux 2
 sudo amazon-linux-extras install epel -y
 sudo yum install stress -y
-
 
 INCREASE CPU LOAD AND CHECK IN "CLOUD WATCH" ----> IN ALARM STATE ( HIGH CPU LOAD) 
 
@@ -186,7 +211,9 @@ load increase command in VM:
 
 dd if=/dev/zero of=/dev/null
 
-it will create the nodes up to maximum mentioned in scaling group 
+it will create the nodes up to maximum mentioned in scaling group ,check in ASG and Target group of ALB.
+
+
 
 
 
