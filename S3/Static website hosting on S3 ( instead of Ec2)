@@ -45,7 +45,11 @@ you will get a static website.
 If you updated index.html and uploaded again you need to change that object to -> "make as public" and check able to get static website
 content or not.
 
+===================================== Enable versioning =========================================
 
+enable on bucket.
+
+and update a file and check previous file still exists , even if you delete the file you will get in versions ( as delete marker)
 
 
 
