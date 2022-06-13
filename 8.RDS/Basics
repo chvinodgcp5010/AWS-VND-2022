@@ -1,1 +1,97 @@
+DB ADMINISTRATION:
+===================
+
+Installs
+● Patching
+● Monitoring
+● Performance Tuning
+● Backups
+● Scaling
+● Security
+● Hardware upgrades
+● Storage Management
+
+❖ Amazon Relational Database Service is a distributed relational database 
+service.
+❖ High Availability Multi-AZ Deployments. ( Primary and secondary )
+❖ Effortless Scaling.
+❖ Read Replicas for performance
+
+
+Flow:
+
+AMAZON RDS (vpc sg "vpc-dbsrv1") --> Ec2 instance with web application (vpc sg "vpc-appsrv1") <---> IGW <---> Internet
+
+RDS and EC2 in same VPC.
+
+==================================== RDS =====================================
+
+Mysql
+postgresql
+oracle
+
+If you are trying to lauch Mysql/Postgresql you can use "Amazon Aurora.
+
+5 times faster than Mysql
+3 times postgresql 
+
+and cheaper compared to both --> supoorts serverless -->64tb of autoscaling storage.
+6 way replication across 3 AZ
+
+
+RDS:
+===
+Mysql 
+postgresql
+sql
+mariadb 
+oracle 
+amazon aurora
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
