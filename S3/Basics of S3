@@ -1,1 +1,67 @@
+Amazon Simple Storage Service (Amazon S3) is storage for the
+internet. You can use Amazon S3 to store and retrieve any amount of
+data at any time, from anywhere on the web.
+
+S3 Basics:
+=========
+● It is Object-Based Storage
+● Data is replicated across multiple facilities
+● Unlimited Storage
+● Amazon S3 stores data as objects within buckets
+● Bucket name has to be unique
+
+
+A bucket is a logical unit of storage in Amazon Web Services (AWS).
+
+Object Storage is a computer data storage architecture that manages data
+as Objects.
+
+
+CREATION OF S3:
+===============
+
+Amazon s3 --> bucket --> folder --> object --> public access
+
+Scenario:
+========
+
+If suppose if we have appliaction need to store images data on S3 . Devops will create s3 and will assign permissions to it nd app developer will add the 
+details in appn to store images on s3
+
+Ec2 ----> S3 <--- Ec2
+
+S3 Standard:
+general-purpose storage of frequently accessed data.Fast access & object replication in multi AZ.
+
+S3 One Zone-IA
+is for data that is accessed less frequently, but requires rapid access when needed. Slow access, no object replication.
+
+S3 IA– Infrequent Access:
+Long-lived, but less frequently accessed data. Slow access,object replication in multi AZ
+
+S3 Intelligent Tiering
+Automatically moves data to most cost effective tier.
+
+S3 Glacier:
+Low Cost Storage class for data Archiving.
+
+S3 Glacier Deep Archive
+Lowest cost storage, retrieval time of 12 Hrs
+
+
+
+LIFECYCLE POLICIES:
+===================
+
+amazon s3 standard access -->(30 days) s3 IA --> (30 days) any one of the AZ -->(90 days) Glacier
+
+
+
+
+
+
+
+
+
+
 
