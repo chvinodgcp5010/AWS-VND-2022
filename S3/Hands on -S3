@@ -1,0 +1,175 @@
+S3 is  a global storage we can access anywhere . but we need to provide region ( based on appn users we can select region ) otherwise appn in 1 region and s3 
+in other region it will be "high latency" ( long time to connect)
+
+(based on the users access add region)
+
+==================================================
+Standard:
+Frequently accessed data (more than once a month) with milliseconds access
+
+Intelligent-Tiering:
+Data with changing or unknown access patterns
+
+Standard-IA:
+Infrequently accessed data (once a month) with milliseconds access
+
+
+One Zone-IA	Recreatable, infrequently accessed data (once a month) stored in a single Availability Zone with milliseconds access
+
+Reduced redundancy:
+Noncritical, frequently accessed data with milliseconds access (not recommended as S3 Standard is more cost effective)
+
+
+========================================
+
+By default whatever uploaded in s3 bucket are pvt.
+and every access is denied by public.
+
+
+If you want to make the data public (click public access)
+
+========================================= CREATE BUCKET =======================================
+
+After creating bucket "click on properties"
+
+PROPERTIES:
+============
+
+versioning
+tags
+Intelligent tier
+static website hosting
+
+Server access logging:
+======================
+whatever and what source we got traffic from internet to s3 will store here ( create a directory ) 
+if you want to store access log at some other place . mostly helpfull bucket is public and from where and who has accessed to it. you can select any target s3 
+bucket.
+
+
+PERMISSIONS:
+============
+
+by default all public level access is blocked .
+One way you can make bucket public and not public.
+
+Othrway to giving bucket policies -> You can specify nice json policy and who can access and how much they can access . 
+you can specify Ip's and IAM users
+
+if you want fine tune permissions you can use policies.
+
+
+Access control list (ACL):
+==========================
+Grant basic read/write permissions to other AWS accounts
+
+you can make public to specific account of aws user. or you can make entire bucket to public also using ACL.
+
+
+
+============================== CREATE BUCKET AND UPLOAD FILES ====================================
+
+While uploading you can change configurations as well to change "Storage class" and "Server-side encryption" and change "permissions"
+
+
+Permissions:
+=============
+Grant public access and access to other AWS accounts.
+->Object Ownership
+Control ownership of objects written to this bucket from other AWS accounts and the use of access control lists (ACLs). 
+Object ownership determines who can specify access to objects.
+
+ACLs disabled (recommended)
+All objects in this bucket are owned by this account. Access to this bucket and its objects is specified using only policies.
+
+ACLs enabled
+Objects in this bucket can be owned by other AWS accounts. Access to this bucket and its objects can be specified using ACLs.
+
+
+We can change storage class and encryption after upload of objecs as well.
+
+========================
+
+click on file and click on "open" it will open the file and able to download as well.
+
+By default it will open file using "IAM user" we logged in AWS, We can access it over internet using default logged in user , while clicking on "open"
+
+Also we have endpoint :
+
+Object url:
+===========
+
+copy the access url and hit on browser . This is we  acces the url as "anonymous user" 
+
+access denied, because object is "not public" 
+
+https://tcs-dataview.s3.amazonaws.com/AWSSlides+(1).pdf
+
+Error:
+
+<Error>
+<Code>AccessDenied</Code>
+<Message>Access Denied</Message>
+<RequestId>08MS9ZN81RCKYP41</RequestId>
+<HostId>0NbHoIN8PqhXLfelI//QbAkBGFsDFZCvPprFnRo813enOuKRFn/C6WgtF40EhxdKtLAaALsuHMg=</HostId>
+</Error>
+
+Note:
+When public read access is enabled and not blocked by Block Public Access settings, anyone in the world can access the specified objects.
+
+
+NOTE:
+=====
+If you want to access over public first you need to change "permissions" from bucket and expose to "public"
+after that you need to make object as public as well. otherwise only bucket permission change it will not work . both needed.
+
+-> First you need to chanage from bucket "Make bucket as public" then Make object as "make public using ACL"
+
+-> Once done try to access it using URL:
+https://tcs-dataview.s3.amazonaws.com/2128_tween_agency.zip
+
+you will be able to access it anywhere from internet ( Open to every one ) for other objects if not enabled to public it give "Access denied"
+
+=========================
+Use of S3:
+
+upload data and access it from anywhere , you can give this to developer and dev will put theie in application code and to this endpint
+data will be uploaded then the data will be over public.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
