@@ -14,17 +14,16 @@ https://repost.aws/questions/QUVgQ58F8CTz-YiUiVZqinJw/why-make-public-option-on-
 
 create bucket and disable "Block public access (bucket settings)"
 
-on bottom of 
-
 On bucket -> permission --> Object Ownership
-edit in bydefault "ACLs disabled (recommended)" and change to "ACLs enabled" from "Bucket owner preferred" to "Object writer"
+
+edit  by default "ACLs disabled (recommended)" and change to "ACLs enabled" and from "Bucket owner preferred" to "Object writer"
 
 Goto Object --> Click on all --> "make as public"
 
 
 Once all done 
 
-Create bucket --> Upload html page --> Add bucket ( public access permission ) and ACL access enable and enabled all object to public.
+Create bucket --> Upload html page ( drag files and upload ) --> Add bucket ( public access permission ) and ACL access enable and enabled all object to public.
 
 
 GOTO Properties --> On bottom --> "Static website hosting"
