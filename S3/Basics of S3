@@ -1,14 +1,20 @@
-Amazon Simple Storage Service (Amazon S3) is storage for the
-internet. You can use Amazon S3 to store and retrieve any amount of
+Amazon Simple Storage Service (Amazon S3) is storage for theinternet. You can use Amazon S3 to store and retrieve any amount of
 data at any time, from anywhere on the web.
+
+Eg:
+
+like google drive and dropbox.
+
+UPload files and access from anywhere like doc, pics and videos everything like object only
+
 
 S3 Basics:
 =========
 ● It is Object-Based Storage
-● Data is replicated across multiple facilities
+● When you upload data then Data is replicated across multiple facilities (AZ)
 ● Unlimited Storage
 ● Amazon S3 stores data as objects within buckets
-● Bucket name has to be unique
+● Bucket name has to be unique ( It has to be unique on the internet using name we can browse on internet)
 
 
 A bucket is a logical unit of storage in Amazon Web Services (AWS).
@@ -16,19 +22,28 @@ A bucket is a logical unit of storage in Amazon Web Services (AWS).
 Object Storage is a computer data storage architecture that manages data
 as Objects.
 
+like doc, pics and videos everything like object only. you have provide permission at bucket level or object level as well.
+
 
 CREATION OF S3:
 ===============
 
-Amazon s3 --> bucket --> folder --> object --> public access
+Amazon s3 --> bucket --> folder --> object --> public access (based on permission public or pvt)
 
 Scenario:
 ========
 
-If suppose if we have appliaction need to store images data on S3 . Devops will create s3 and will assign permissions to it nd app developer will add the 
-details in appn to store images on s3
+If suppose if we have appliaction Ec2 ( web app) need to store images data on S3 . Devops will create s3 and will assign permissions to it nd app developer 
+will programmer add the details in appn to store images on s3
 
 Ec2 ----> S3 <--- Ec2
+
+Same like EFS --> we can store files at os level(folder)
+S3 -> Programmatically access through appn.
+
+S3 Storage types:
+=====================
+
 
 S3 Standard:
 general-purpose storage of frequently accessed data.Fast access & object replication in multi AZ.
@@ -53,7 +68,17 @@ Lowest cost storage, retrieval time of 12 Hrs
 LIFECYCLE POLICIES:
 ===================
 
-amazon s3 standard access -->(30 days) s3 IA --> (30 days) any one of the AZ -->(90 days) Glacier
+amazon s3 standard access -->(30 days) s3 IA --> (30 days) One Zone IA -->(90 days) Glacier --> delete
+
+
+CHARGES:
+=======
+
+Storage
+● Requests
+● Tiers
+● Data Transfer
+● Region Replication
 
 
 
