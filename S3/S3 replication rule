@@ -1,0 +1,48 @@
+Bucket --> management --> create replication rule
+
+For replication of data from s3 bucket to other s3 bucket for "disaster recovery".
+
+Destination bucket must have versioning enabled.
+===============================================
+Replication requires versioning to be enabled for the destination bucket. Enable object versioning on this bucket to continue creating the 
+replication rule or select a different bucket.
+
+Replication rule name: 
+->tcsstaticwebsitedataweave-replica
+
+Status
+->Enabled
+
+Choose a rule scope
+->Limit the scope of this rule using one or more filters
+
+Destination
+->Choose a bucket in this account
+
+IAM role
+-> Create new IAM Role
+
+Destination storage class
+-> Onezone-IA or sth
+
+Save
+
+Note:
+Replicate existing objects?
+yes/no
+
+
+=======Check ================
+
+Upload objects in 1 bucket and check replication is working properly or not ( replication will take some time )
+
+
+
+
+
+
+
+
+
+
+
