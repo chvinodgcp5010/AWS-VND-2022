@@ -1,10 +1,51 @@
-goto "https://www.tooplate.com/"
+goto "https://www.tooplate.com/" and donwload template files .zip format.
 
 https://www.tooplate.com/view/2109-the-card
 
 click on "template and download" on bottom 
 
 extrack ".zip" file downloaded and upload all files on "s3 bucket"
+
+==================================================================
+
+https://repost.aws/questions/QUVgQ58F8CTz-YiUiVZqinJw/why-make-public-option-on-object-is-now-removed
+
+create bucket and disable "Block public access (bucket settings)"
+
+on bottom of 
+
+On bucket -> permission --> Object Ownership
+edit in bydefault "ACLs disabled (recommended)" and change to "ACLs enabled" from "Bucket owner preferred" to "Object writer"
+
+Goto Object --> Click on all --> "make as public"
+
+
+Once all done 
+
+Create bucket --> Upload html page --> Add bucket ( public access permission ) and ACL access enable and enabled all object to public.
+
+
+GOTO Properties --> On bottom --> "Static website hosting"
+
+Static website hosting
+
+Enable
+Host a static website
+
+
+click on create 
+===========================================================
+
+Once all done click on static website hosting "endpoint url"  http://tcsstaticwebsitedataweave.s3-website-us-east-1.amazonaws.com
+
+you will get a static website.
+
+
+
+
+
+
+
 
 
 
