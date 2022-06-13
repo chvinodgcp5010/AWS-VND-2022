@@ -1,3 +1,5 @@
+On bucket --> Management --> create lifecycle rule.
+
 Bucket --> Lifecycle configuration
 
 name: log-archive
