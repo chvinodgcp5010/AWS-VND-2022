@@ -1,0 +1,25 @@
+Bucket --> Lifecycle configuration
+
+name: log-archive
+Choose a rule scope ---> Limit the scope of this rule using one or more filters
+
+Prefix
+Add filter to limit the scope of this rule to a single prefix.
+->logs
+
+Lifecycle rule actions
+->Move current versions of objects between storage classes
+->xpire current versions of objects
+
+Transition current versions of objects between storage classes
+
+standard IA -->30
+One zone -->60           (The integer value for One Zone-IA must be at least 30 more than the value for Standard-IA.)
+Archive--> 60
+deep archive -->90
+
+Expire current versions of objects:  400
+(note : once you click Expire current versions of objects , you will get option below)
+
+
+Create lifecycle rule 
