@@ -28,9 +28,10 @@ Create bucket --> Upload html page ( drag files and upload ) --> Add bucket ( pu
 
 GOTO Properties --> On bottom --> "Static website hosting"
 
-Static website hosting
+place index.html path 
+error.html both
 
-Enable
+Enable 
 Host a static website
 
 
@@ -40,6 +41,9 @@ click on create
 Once all done click on static website hosting "endpoint url"  http://tcsstaticwebsitedataweave.s3-website-us-east-1.amazonaws.com
 
 you will get a static website.
+
+If you updated index.html and uploaded again you need to change that object to -> "make as public" and check able to get static website
+content or not.
 
 
 
