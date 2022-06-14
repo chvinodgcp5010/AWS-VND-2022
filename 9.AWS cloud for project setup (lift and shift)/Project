@@ -1,1 +1,24 @@
 https://github.com/chvinodgcp5010/CICD-project-Nexus-and-Sonarqube/tree/aws-LiftAndShift
+
+SERVICES USING IN THIS PROJECT
+
+Ec2 instances -->Vm for tomcat , rabbitmq, memcached, mysql
+ELB           --> nginx lb replacement 
+Autoscaling   --> automation of vm instances
+S3/EFS        --> storage
+Route53       -->Pvt dns service
+
+
+IAM
+ACM
+EBS  etc
+
+======================================ARCHITECTURE OF AWS SERVICES FOR THIS PROJECT=================================
+
+Ec2 instances -
+ELB          
+Autoscaling   
+S3/EFS        -->FOR  shared storage
+Route53       
+Amazon certificate manage
+
