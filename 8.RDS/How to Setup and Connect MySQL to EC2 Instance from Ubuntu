@@ -1,0 +1,90 @@
+For ubuntu 
+https://www.bacancytechnology.com/blog/connect-mysql-to-ec2-instance
+
+Step 1: Update System Packages and Install MySQL
+sudo apt update
+
+Now, install MySQL using the below command to install the latest MySQL.
+sudo apt-get install mysql-server -y
+
+After successful installation of mysql-server, we can check the MySQL version by using this command-
+
+mysql --version
+
+
+Step 2: Configure MySQL Installation
+To configure the installation of MySQL, run the security script with sudo to run as the root user- the super privileged user.
+
+Run the below command-
+
+sudo mysql_secure_installation
+
+
+When we install MySQL for the first time, we will be prompted to create a new password.
+
+If you are getting an error while setting up the password, check the temporary password in the log file.
+
+Use the below command to get a temporary password.
+
+cat /var/log/mysqld.log
+
+Step 3: Login into MySQL and Create a User
+Use the below command to login into MySQL:
+
+sudo mysql
+
+The command will log in to MySQL using the root user. Once you are logged in, create a user in the MySQL database using these commands:
+
+use mysql;
+CREATE USER 'username'@'host' IDENTIFIED WITH mysql_native_password BY 'password';
+
+Step 4: Grant Access Privileges to User
+Now, to grant access privileges to this newly created user, use this command:
+
+GRANT ALL PRIVILEGES ON *.* TO 'username'@'host';
+Once this is done, run this command,
+
+FLUSH PRIVILEGES;
+
+Step 5: Connect User with MySQL
+Now you can use this user to connect with MySQL like this:
+
+mysql -u user -p
+
+Once prompted for a password, provide the password, and you will be connected.
+
+Trick: If you want to store passwords for that user, so prompting will not annoy us, do these things.
+Create .my.cnf file inside /home/Ubuntu path
+
+Write this command:
+
+sudo nano .my.cnf
+Write these lines in that file and save.
+
+Copy Text
+[mysql]
+user=username
+password=password
+
+Now, whenever you want to connect, you can use this .my.cnf file like this, and no need to provide a password.
+
+
+mysql --defaults-file=/home/ubuntu/.my.cnf -u username
+
+This file is generally needed when running the CI/CD pipeline and connecting to another server’s MySQL server.
+
+Step 6: Restart MySQL Service
+To affect these changes, restart the MySQL service by following commands:
+to check the status of MySQL service:
+
+
+systemctl status mysql.service
+
+Now, if it is in “Running” mode, then restart it using the below command:
+
+Copy Text
+sudo service mysql restart
+
+This will restart the service and will reflect our changes.
+
+Now, your MySQL has been set up in your Ubuntu Ec2 Instance.
