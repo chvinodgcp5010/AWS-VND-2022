@@ -31,6 +31,120 @@ SSH 22 from (MyIP)
 Need to install few packages on ec2 instance 
 
 
+sudo apt update
+sudo apt-get install mysql-server -y
+mysql --version
+
+TRY TO ACCESS DB FROM EC2 INSTANCE:
+==================================
+
+mysql -h tcsdbinstanceid.cqurymp8gyxh.us-east-1.rds.amazonaws.com -u tcsadmin -pjvrK0vM7tJzZ8im4QTF8
+
+here:
+
+-h  tcsdbinstanceid.cqurymp8gyxh.us-east-1.rds.amazonaws.com  ( From DB domain name ) 
+-u tcsadmin                                       ( user creared as a part of rds creation )
+-pjvrK0vM7tJzZ8im4QTF8                            ( password created while rds creation)
+
+mysql: [Warning] Using a password on the command line interface can be insecure.
+
+ERROR 2003 (HY000): Can't connect to MySQL server on 'tcsdbinstanceid.cqurymp8gyxh.us-east-1.rds.amazonaws.com' (110)
+
+ERROR becaue of SG of Mysql we are onnly made from MyIP. So update SG of mysql and try 
+
+check:
+
+telnet tcsdbinstanceid.cqurymp8gyxh.us-east-1.rds.amazonaws.com 3306
+Trying 172.31.92.178...
+
+Here RDS of SG is not allowing anything from ec2 instance 
+
+==================== ERROR ========================
+
+Goto RDS and update SG 
+here mysql access provided as MYIP (its useless because we are not exposing over public) mysql instance so remove the MYIP .
+Instead update 
+
+Mysql 3306     ---> sg of vm instance created (Mysql-client vm) or private ip address (ip/32)of that vm. ( ANY OF THE RULE WILL WORK ) ip oR sg
+
+Once update the SG of RDS check using below 
+
+On VM instance:
+================================= RCA =========================
+
+->telnet tcsdbinstanceid.cqurymp8gyxh.us-east-1.rds.amazonaws.com 3306
+Trying 172.31.92.178...
+Connected to tcsdbinstanceid.cqurymp8gyxh.us-east-1.rds.amazonaws.com.
+
+NOW CONNECT TO RDS FROM EC2 INSTANCE:
+
+->mysql -h tcsdbinstanceid.cqurymp8gyxh.us-east-1.rds.amazonaws.com -u tcsadmin -pjvrK0vM7tJzZ8im4QTF8
+
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 34
+Server version: 8.0.28 Source distribution
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>
+
+
+============================= Run Queries ===============================
+
+show databases;
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| tcsonboardingdb    |
++--------------------+
+5 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
