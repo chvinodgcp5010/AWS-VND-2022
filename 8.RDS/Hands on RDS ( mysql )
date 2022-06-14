@@ -1,0 +1,46 @@
+Consider amazon aurora if you want to deploy Rds as "mysql" or "postgresql" consider Aurora ( cheap and fast )
+
+Standard create --> MySQL --> Version ( select version according to use )
+
+select all as default 
+
+VPC security group:
+-> create new sg : -> tcs-db-sg -->3306
+
+MYSQL/Aurora 3306 from (MyIP)
+
+Public access: No
+
+Database authentication
+-->Password authentication
+Authenticates using database passwords.
+
+Create database 
+
+DB is accessed only internal so we are connecting ec2 instance to db to store the data.
+
+Note:
+We cannot access db over publicly because we disabled public access so I cannot access on My laptop.
+to access this lauch ec2 instance on same VPC , same region and network 
+
+================================= Launch ec2 instance ==================================
+
+SG:
+SSH 22 from (MyIP)
+
+Need to install few packages on ec2 instance 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
