@@ -1,0 +1,96 @@
+CREATE 
+========
+1.Create VPC
+myVPC  10.0.0.0/24
+
+2.Create Subnet
+subnet01-pub 10.0.0.0/25
+subnet02-pvt 10.0.0.128/25
+
+3.Create IGW
+myIGW (attach myVPC to IGW)
+                          
+4.Create Route table (Here public subnet and pvt subnet is based only on route tables created)
+
+Public-RT
+Pvt-RT
+
+click Public-RT -> subnet association add( subnet01-pub )
+click on Route (Public-RT) add 0.0.0.0/0 with myIGW
+
+5.Create vm in pub-subnet 
+  other vm in pvt subnet 
+  
+===============================================================================================================================
+Note:
+Create 1 instance public subnet and other in prvt subnet.
+
+both Vm's  manually enable public ip from aws console . Here only public subnet able to connect to internete and download updates.
+but private subnet will not able to connect , because we have not enable "internet connection"
+
+If you still want to connect to vm deployed on "private subnet" , first connect VM deployed on "public subnet" from there you can connect to "pvt subnet" 
+vm ( It will communicate because these both are in same subnet (with in the n/w it will connect) and both are in same vpc so both in same n/w)
+
+If you want to connect private subnet vm first connect Vm deployed on public subnet and then from here you can connect.
+
+try to download any you will get some error, because we are able to connect vm but "pvt subnet vm" donot have internet connection added.
+
+If you want to download some patching updates from vm deployed on "prvt subnet" add NAT gateway to it.
+
+
+Try to access it vm configured on public subnet. It will connect from command line or putty without any issue 
+Same connect VM configured on Pvt subnet . It will not connect even though added public ip ( becasue its not having internet connection) 
+
+Note: If you are deploying vm on private subnet "there is useless to add public ip"
+================================================================================================================================
+
+6.Create Nat gateway (NAT Gw must be deploy on Public subnet)
+myNATGW -> Subnet (subnet01-pub) -> Connectivity type (Public)
+
+click on Pvt-RT -> subnet association add( subnet01-pvt )
+click on Route (Pvt-RT) add 0.0.0.0/0 with myNATGW
+
+
+1.Try to connect VM deployed on public subnet 
+2.From here only we can connect to VM deployed on PVT subnet using "Pvt ip address" (Public ip will not able to access) -> here private ip of Public subnet vm
+and private ip of private subnet vm both are in same n/w so they can communticate with private address.
+
+After adding NAT gateway and update Route table of private you can connect private subnet vm from vm deployed on public subnet and able to download updates
+from internet.
+
+
+1. Connection to public subnet vm (using public ip)
+
+C:\Users\Downloads>ssh -i "key.pem" ec2-user@3.232.129.123
+
+[ec2-user@ip-10-0-0-6 ~]$ sudo su -
+Last login: Thu Aug 18 11:49:43 UTC 2022 on pts/1
+
+
+2. Connection to private subnet vm (using privateip)
+[root@ip-10-0-0-6 ~]# ssh -i "key.pem" ec2-user@10.0.0.192              (Pvt ip address of vm deployed on Pvt subnet)
+
+
+3. we are able to download updates from vm deployed on private subnet using "NAt gateway"
+
+[root@ip-10-0-0-192 ~]# yum update
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                                                 | 3.7 kB  00:00:00     
+No packages marked for update
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
