@@ -1,0 +1,94 @@
+IGW & NAT :
+It logically enables routing of traffic in public network
+
+DNS:
+Map Domain Name to Ip address
+
+Elastic ip:
+Static ip which never changes (Supports only IPV4)
+
+VPC Endpoints:
+Private connection b/w your vpc and other aws services without using internet
+
+Network interface:
+A point of connection b/w public and pvt n/w
+
+Egress only IG:
+Allows only outbound communictation from EC2 over IPV6
+
+Route tables:
+Defines how traffic is routed b/w each subnet.
+
+VPC peering:
+Connection b/w vpc's
+
+
+======================================
+1.What are subnets?
+Subnet is a subdivisio of larger n/w
+Ip address with common prefix are in same subnet.
+172.31.
+
+
+========================= CREATING VPC WITH AWS CONSOLE ===============================
+
+->Create Custom VPC
+
+VPC Name    : VPC_DEMO
+CIDR        : 10.0.0.0/16
+Subnets     : 1 public and 1 pvt in separate az
+INGW        : 1
+Route table : 1 in public subnet
+Secuirty groups: 2
+Nat gateway : 1
+
+
+
+========================================================================================
+                  AZ1    (web servers) (10.0.0.5),-->NAT Gateway, -->Public  subnet(10.0.0.0/24)  ->Route table 10.0.0.0/16 local , 0.0.0.0 IGW-ID 
+
+VPC
+
+                          (DB Servers)(10.0.1.5) -->private subnet(10.0.1.0/24)   --> Route table 10.0.0.0/16(Destination) Local (target)
+                                                                                      0.0.0.0    NAT_GW_ID
+
+
+Here
+
+Public Subnet:
+->In rotute table added 0.0.0.0/0 as destication so it can connect to internete directly (webservers)
+->have public ip address
+
+Private subnet:
+->Do not having public ip address
+->(DB servers) we donot expose over public subnet but we need to access internet for any app installation or patching how it will connect?
+
+Using NAT Gateway : Here we are connection to internet from DB servers over NAT gw.
+Using this we can connect to internet and do patching work but outsiders will not access and perform any action.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
