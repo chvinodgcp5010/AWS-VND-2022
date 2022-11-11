@@ -1,0 +1,48 @@
+CIDR:
+->Classless interdomain routing 
+->a methodology to represent an ip address
+->Reduces wastage of ip address by providing exact no of ip addresses to users
+->it represents ip address along with special number (/n) to specify no of bits present in n/w ID.
+
+
+172.31.0.0/16
+
+here 16 means 8 8 8 8 it has 4 octets  = 32
+172.31 has 16 bit 
+/16 means these 2 octets are locked and it will produce rest of 2 octest only 2power 16 it produce ip addresses.
+TOtal bits available to use in n/w 32-16 = 16 
+
+
+Eg2:
+172.31.0.0/28
+Here 28 bits are locked only 4 bits are available 
+2 power 4 ip address are available = 16 ip addresses.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
