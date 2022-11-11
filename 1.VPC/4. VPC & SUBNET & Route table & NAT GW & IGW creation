@@ -1,6 +1,10 @@
 HOW PRIVATE SUBNET VM CONNECT TO INTERNET AND PERFORM SOME PATCHING ACTION?
 ========================================================================
-
+VPC-1
+SUBNET -2
+ROUTE TABLE - 2
+IGW -1
+NAT GW -1 
 
 1.Create VPC (10.0.0.0/16)
 2.Create 2 subnets in differernt zones pvt-Subnet(10.0.1.0/24) and pub-subnet (10.0.2.0/24)
