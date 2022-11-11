@@ -1,0 +1,440 @@
+1.Create VPC (10.0.0.0/16)
+2.Create 2 subnets in differernt zones pvt-Subnet(10.0.1.0/24) and pub-subnet (10.0.2.0/24)
+3.Create 2 route tables with vpc -> name it as public-rt and private-rt 
+add subnets to route table 
+public-rt  ===>pub-subnet
+private-rt ===>Private-subnet
+
+4.Create IGW -> Attach IGW with VPC
+5.Click on Route table -> Name : Public-rt
+click on route and route dest (0.0.0.0/0) with target (IGW)
+
+6.Create 2 VM's under vpc 1 in public subnet and other in private subnet
+Public subnet vm:
+================
+ssh from public ip and try to install or ping to google.com
+we can ssh and ping and install packages ( because for public subnet we have added "internet" to install or update packages.
+
+Private Subnet VM:
+===================
+we dont have a "Public ip" to access over externl
+-> so first connect "public subnet" vm having "publi ip" then from there connect to private ip 
+
+->ssh to public ip 
+->sudo su -
+->Copy .pem key to the same path 
+->connect with 
+ssh -i key.pem ec2-user@10.0.1.247
+
+-> you can ssh but not able to connect to internte (Ping google.com) because this subnet and rt is not having internet attached
+
+7.Create NAT GATEWAY ( on public subnet)
+Update "private-rt" 
+0.0.0.0    nat-gateway 
+
+and try to ping 
+
+ping google.com
+you can access to the private ip vm from private subnet to conenct to the internet using "NAT- gateway"
+
+============================================= 1.CREATE VPC ==============================================
+
+Region: us-east-1 (North virginia) 
+
+VPC:
+===
+VPC Settings -> Resources to create 
+
+VPC only
+->Name: MY-VPC-VND
+
+IPv4 CIDR blockInfo
+->IPv4 CIDR manual input
+
+IPv4 CIDR
+->10.0.0.0/16
+
+IPv6 CIDR block
+->No IPv6 CIDR block
+
+CREATE VPC
+
+==================================== 2.CREATE SUBNET ==========================================
+
+PRIVATE SUBNET:
+===============
+
+VPC ID: __________________ (Load your vpc id created earlier)
+
+
+Subnet settings:
+->Subnet name:        MY-VPC-Private-subnet
+->Availability Zone:  Select any zone   (eg: us-east-1c)
+->IPv4 CIDR block:    10.0.1.0/24         (In vpc 10.0.0.0/16 2 octets are blocked so need 10.0. are already blocked) it has 2 power 8 = 256 ip addresese.
+
+
+PUBLIC SUBNET:
+===============
+
+VPC ID: __________________ (Load your vpc id created earlier)
+
+
+Subnet settings:
+->Subnet name:        MY-VPC-Public-subnet
+->Availability Zone:  Select any zone   (eg: us-east-1a) -> Both subnets will be Same az or different az no issue.
+->IPv4 CIDR block:    10.0.2.0/24         (In vpc 10.0.0.0/16 2 octets are blocked so need 10.0. are already blocked) it has 2 power 8 = 256 ip addresese.
+                                          total available ip addresses will be 251
+
+By default subnets will not allocate "Public ip address" to the VM 
+-> We need to edit subnets created (only public subnets we need public ip) so need to enable it or at the time vm creation also we have 
+a chance to enable it.
+
+Auto-assign IP settingsInfo
+Enable the auto-assign IP settings to automatically request a public IPv4 or IPv6 address for a new network interface in this subnet.
+
+Click on "Public subnet" --> "Actions" --> "Edit Subnet settings"
+
+Auto-assign IP settings
+  -> Enable auto-assign public IPv4 address and save 
+
+Note:
+====
+
+Only The vm's created on "public subnet" we need to "public ip" so we enabled Public ipv4 address to "Public subnet"
+for private we do not requie "public ip"
+
+           
+==================================== 3.ROUTE TABLES ==========================================
+
+Set of rules ,which are used to determine "where the n/w traffic has to be routed" 
+->It specifies the destination subnet (called prefix) and gateway router to reach it.
+
+Once we create Subnets , it will create 1 route table automatically, So keep it as it is and create 2 route tables 
+
+Create route table:
+===================
+
+Name: MY-VPC-Private-rt
+VPC:  (select vpc)
+
+CREATE
+
+Name: MY-VPC-Public-rt
+VPC:  (select vpc)
+
+CREATE
+
+
+======== Add subnets to route table ===========
+
+By default Once we create subnets , it will create automatically 1 Route table and those 2 will map to "Defult" Route table.
+
+Click on Route table
+->MY-VPC-Private-rt
+  --> actions --> edit subnet associations 
+    -->Click on Subnet (MY-VPC-Private-subnet)
+      --> Click on Save association
+
+
+
+Click on Route table
+->MY-VPC-Public-rt
+  --> actions --> edit subnet associations 
+    -->Click on Subnet (MY-VPC-Public-subnet)
+      --> Click on Save association
+
+================== Add IGW to Public subnet =========================
+
+First create IGW then click on Route table -> Click on "MY-VPC-Public-rt"
+-> Click on "EDIT Routes"
+-> Add route  Destination (0.0.0.0/0)  and Target (Internet gateway)  and click on save changes
+
+
+
+============================== 4. INTERNET GATEWAY ======================
+
+IGW is a VPC component that helps "instances to communicate over the internet" using "targets" provided in "route table"
+
+-> The instnace that need to have internet access "must have a global ip and relevant security groups"
+-> Route table of subnet in which the instance is present must point to "IGW"
+
+Route table which we have added "public subnet" must point to IGW to access over internet
+
+->PUBLIC SUBNET:
+  ->Subnet which is attached with IGW is called "Public subnet"
+
+
+CREATE IGW:
+-----------
+Name: MY-VPC-IGW
+
+Click on "Create Internet Gateway"
+
+By default once we create IGW , the state will be "Detached" -> need to attach this to "VPC"
+
+Actions ->Attach to VPC -> Select vpc ->Click on attach to IGW
+
+Once attach IGW with VPC you will get the status of IGW in AWS CONSOLE is 
+
+MY-VPC-IGW     igw-0953f5f1171c5d9d0	 Attached	vpc-02a07e6563ed15f6d | MY-VPC-VND
+
+
+=============================== CREATE Secuirty group ============================
+
+Be default secuirty groups "Allow all oubtbound" traffic and block "Inbound traffic"
+
+1.CREATE SECUIRTY GROUPS :
+
+EC2-->Security group 
+
+Security group name: MY-VPC-sg
+Description        : allow ssh
+VPC                : (add vpc)
+
+Inbound rules :
+ --> add rule
+   --> Type (SSH)  -->Source -->Custom --> 0.0.0.0 
+
+Outbound rules :
+Type (all traffic)   -->Destination -->Custom (0.0.0.0/0)
+
+Click on"Create Secuirty group"
+
+
+================== CHECK THE USAGE OF OUTBOUND RULES =====================
+
+Inbound rules --> enabled SSH to Login
+Outbound rules --> 
+
+From vm we need to connect internet AND install packages So we need to enable outbound connection to update and install packages.
+
+
+====== Remove outbound rules and check install or update packages ======
+
+->remove outbound rules and try update or install pkgs
+
+You will receive error (because we have outbound connection) allowed only ssh inbound to login to the vm.
+
+$ping google.com
+PING google.com (142.251.16.101) 56(84) bytes of data.     (It will not progress because we are blocked outbound traffic)
+
+$sudo install httpd -y
+
+
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Resolving Dependencies
+--> Running transaction check
+---> Package httpd.x86_64 0:2.4.54-1.amzn2 will be installed
+--> Processing Dependency: mod_http2 for package: httpd-2.4.54-1.amzn2.x86_64
+--> Running transaction check
+---> Package mod_http2.x86_64 0:1.15.19-1.amzn2.0.1 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+============================================================================================================================================================================
+ Package                                Arch                                Version                                           Repository                               Size
+============================================================================================================================================================================
+Installing:
+ httpd                                  x86_64                              2.4.54-1.amzn2                                    amzn2-core                              1.4 M
+Installing for dependencies:
+ mod_http2                              x86_64                              1.15.19-1.amzn2.0.1                               amzn2-core                              149 k
+
+Transaction Summary
+============================================================================================================================================================================
+Install  1 Package (+1 Dependent package)
+
+Total download size: 1.5 M
+Installed size: 4.5 M
+
+Downloading packages:
+httpd-2.4.54-1.amzn2.x86_64.rp FAILED
+https://amazonlinux-2-repos-us-east-1.s3.dualstack.us-east-1.amazonaws.com/2/core/2.0/x86_64/0cac95da63306270fbedb235008cfaf4f04477723dc1966e2abadb27
+4a0edd44/../../../../../blobstore/dad47eb5c1385c6b925d34bb3fac0a590b2529e070521a3342ec0f5708017056/httpd-2.4.54-1.amzn2.x86_64.rpm?instance_id=i-004
+3644482a33c06e&region=us-east-1: [Errno 12] Timeout on https://amazonlinux-2-repos-us-east-1.s3.dualstack.us-east-1.amazonaws.com/2/core/2.0/x86_64/
+0cac95da63306270fbedb235008cfaf4f04477723dc1966e2abadb274a0edd44/../../../../../blobstore/dad47eb5c1385c6b925d34bb3fac0a590b2529e070521a3342ec0f5708
+017056/httpd-2.4.54-1.amzn2.x86_64.rpm?instance_id=i-0043644482a33c06e&region=us-east-1: (28, 'Failed to connect to amazonlinux-2-repos-us-east-1.s3
+.dualstack.us-east-1.amazonaws.com port 443 after 2705 ms: Connection timed out')
+Trying other mirror.
+
+mod_http2-1.15.19-1.amzn2.0.1. FAILED
+
+https://amazonlinux-2-repos-us-east-1.s3.dualstack.us-east-1.amazonaws.com/2/core/2.0/x86_64/0cac95da63306270fbedb235008cfaf4f04477723dc1966e2abadb274
+a0edd44/../../../../../blobstore/1635bd31f0d7622b202fedbe0f7d452d972af79df6384e59fec40f93e37608bb/mod_http2-1.15.19-1.amzn2.0.1.x86_64.rpm?instance_
+id=i-0043644482a33c06e&region=us-east-1: [Errno 12] Timeout on https://amazonlinux-2-repos-us-east-1.s3.dualstack.us-east-1.amazonaws.com/2/core/2.0
+/x86_64/0cac95da63306270fbedb235008cfaf4f04477723dc1966e2abadb274a0edd44/../../../../../blobstore/1635bd31f0d7622b202fedbe0f7d452d972af79df6384e59fe
+c40f93e37608bb/mod_http2-1.15.19-1.amzn2.0.1.x86_64.rpm?instance_id=i-0043644482a33c06e&region=us-east-1: (28, 'Failed to connect to amazonlinux-2-
+repos-us-east-1.s3.dualstack.us-east-1.amazonaws.com port 443 after 2702 ms: Connection timed out')
+Trying other mirror.
+
+
+================= Add outbound rules to security groups and check install or update packages ===================
+
+Security gorup ->Outbound trafcic
+all traffic   destination(0.0.0.0/0) anywhere
+
+$ping google.com            (Able to ping because outbound traffic enabled)
+
+PING google.com (142.251.16.101) 56(84) bytes of data.
+64 bytes from bl-in-f101.1e100.net (142.251.16.101): icmp_seq=24 ttl=51 time=1.41 ms
+64 bytes from bl-in-f101.1e100.net (142.251.16.101): icmp_seq=25 ttl=51 time=1.40 ms
+64 bytes from bl-in-f101.1e100.net (142.251.16.101): icmp_seq=26 ttl=51 time=1.41 ms
+64 bytes from bl-in-f101.1e100.net (142.251.16.101): icmp_seq=27 ttl=51 time=1.46 ms
+64 bytes from bl-in-f101.1e100.net (142.251.16.101): icmp_seq=28 ttl=51 time=1.46 ms
+
+
+
+
+
+$sudo yum install httpd -y                   ( you will successfully download packages )
+
+Installed:
+  httpd.x86_64 0:2.4.54-1.amzn2
+
+Dependency Installed:
+  mod_http2.x86_64 0:1.15.19-1.amzn2.0.1
+
+Complete!
+
+================================ CREATE 2 VM's ===================================
+
+1.Vm-1 in private subnet ( no public ip)
+2.Vm-2 in public subnet ( have public ip )
+
+CONNECT TO PUBLIC VM
+=====================
+
+Connect to VM-2 and SSH in to it ( opened inbound in security group SSH so we can logint)
+Install packages  any (yum install httpd -y) ( we can downalod because we have enbled outbound all traffic)
+
+VM-2 ->Public subnet ->(attach to) Public-rt ->(attach to) IGW 
+
+
+CONNECT TO PRIVATE VM
+=====================
+Opend cmd where .pem file present and execute with 
+
+->ssh -i "aws.pem" ec2-user@10.0.1.247
+ssh: connect to host 10.0.1.247 port 22: Connection timed out
+
+It will not connect why?
+-> becuase we can connect to outside using "PUBLIC IP" only . then HOW TO CONNECT?
+
+1.First connect to public ip 
+2.From public ip enabled vm connect to "Private ip" of vm instance
+
+Subnet group 
+-> inbound rules --> SSH 22 must be enabled
+-> outbound rules --> must be enabled ( here all traffic 0.0.0.0/0) enabled
+
+
+Connect to Publicly added vm
+
+->ssh -i "aws.pem" ec2-user@3.228.219.247
+->[ec2-user@ip-10-0-2-222 ~]$ sudo su -
+
+Create *.pem file and COPY the key aws.pem to the path 
+vi key.pem            (use any name)
+
+
+Run this command, if necessary, to ensure your key is not publicly viewable.
+chmod 400 key.pem
+
+[root@ip-10-0-2-222 ~]#ls
+key.pem
+
+ACCESS FROM PUBLIC SUBNET VM ( having public ip)
+------------------------------------------------
+[root@ip-10-0-2-222 ~]# ssh -i "key.pem" ec2-user@10.0.1.247
+Last login: Fri Nov 11 09:20:15 2022 from 10.0.2.222
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-10-0-1-247 ~]$
+
+
+NOTE:
+Observe above its connected from [root@ip-10-0-2-222 ~] to [ec2-user@ip-10-0-1-247 ~] 
+10-0-1-247 vm have only private ip address. 
+
+
+======================== TRY TO ACCESS PING FROM PRIVATE IP ======================
+
+Here it will not connect because we have not attached any routes(MY-VPC-Public-rt) having to (private subnet vm's) 
+
+[ec2-user@ip-10-0-1-247 ~]$ ping google.com
+PING google.com (172.253.115.100) 56(84) bytes of data.
+
+
+
+======================= WHAT IS THE NEED OF PRIAVATE SUBNET VM TO CONNECT TO INTERNTET? ========================
+
+->ping google.com
+PING google.com (172.253.115.100) 56(84) bytes of data.
+
+Priavate instance to connect to google (it will not exchange any packets) because it will not have any "GATEWAY" to connect to internet. which is what
+the private instance tobe
+
+1.Many of private instances inside "private subnet" need access to the internet 
+-> because of "Updating database" 
+-> Updating "security patches" etc
+
+HOW TO DO THIS?
+
+============================================= NAT GATEWAY ======================================
+
+NAT GW -> Created so that private instance will connect to internet
+
+-> 1 way access
+->Nat device enable private subnet to access over internet or other aws resources and "Prevent internet from initiating connections 
+to the instance" ( Mean vm can go to internet and install packages But on internet people will not connect and access to it)
+
+->Private subnet connect to internete using "NAT Gateway" device 
+
+
+Name         : My-VPC-Nat
+Subnet       : (My-VPC-Public-subnet)              ==> NAT must install on Public subnet.
+Connectivity type: Public
+Allocate elastic ip: 
+
+CREATE NAT GATEWAY
+
+
+==================================== ADD NAT GATEWAY details over Private route table =====================
+
+Click on "MY-VPC-Private-rt"
+->Edit routes -> add route 
+->destination (0.0.0.0/0)   target : NAT-gateway
+
+Click on SAVE
+
+
+
+==================================== Once CREATE AND ASSIGN NAT GW AND UPDATE ROUTE TABLE TRY PING ==============================
+
+[ec2-user@ip-10-0-1-247 ~]$ ping google.com
+PING google.com (172.253.115.100) 56(84) bytes of data.
+64 bytes from bg-in-f100.1e100.net (172.253.115.100): icmp_seq=1 ttl=97 time=2.86 ms
+64 bytes from bg-in-f100.1e100.net (172.253.115.100): icmp_seq=2 ttl=97 time=2.37 ms
+64 bytes from bg-in-f100.1e100.net (172.253.115.100): icmp_seq=3 ttl=97 time=2.44 ms
+64 bytes from bg-in-f100.1e100.net (172.253.115.100): icmp_seq=4 ttl=97 time=2.43 ms
+
+
+PING will successful and able to conenct to the internet from (Private subnet) VM (private ip) using NAT Gw
+
+
+
+[ec2-user@ip-10-0-1-247 ~]$ logout
+Connection to 10.0.1.247 closed.
+[root@ip-10-0-2-222 ~]#
+
+
+
+
+
+
+
+
