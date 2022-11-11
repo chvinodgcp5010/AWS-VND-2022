@@ -1,0 +1,36 @@
+https://www.geeksforgeeks.org/private-ip-addresses-in-networking/
+
+Private IP Addresses are those addresses that work within the local network.
+
+These addresses are non-routable on the Internet. The address is basically assigned by the network router to your particular device. 
+The unique private IP address is provided to every device which is on the same network. In this way, devices communicate with one another on the 
+same network without connecting to the entire Internet.
+
+In Class A, : 10.0.0.0 to 10.255.255.255
+In Class B, : 172.16.0.0 to 172.31.255.255
+In Class C, : 192.168.0.0 to 192.168.255.255
+
+
+https://www.ipaddressguide.com/cidr
+
+CIDR             10.0.0.0/24
+
+Submit
+
+CIDR Range	 10.0.0.0/24
+Netmask	         255.255.255.0
+Wildcard Bits	 0.0.0.255
+First IP	 10.0.0.0
+First IP (Decimal)	167772160
+Last IP	10.0.0.255
+Last IP (Decimal)	167772415
+Total Host	 256
+
+==============================
+
+https://www.ipaddressguide.com/cidr
+
+CIDR  10.0.0.0/28
+
+Submit:
+total hosts: 16
