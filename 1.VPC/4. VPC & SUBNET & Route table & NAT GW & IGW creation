@@ -435,14 +435,19 @@ PING google.com (172.253.115.100) 56(84) bytes of data.
 
 PING will successful and able to conenct to the internet from (Private subnet) VM (private ip) using NAT Gw
 
-
-
 [ec2-user@ip-10-0-1-247 ~]$ logout
 Connection to 10.0.1.247 closed.
 [root@ip-10-0-2-222 ~]#
 
 
+========================================= HOW TO DELETE ALL CREATED INFRA ===================================
 
+1.Delete instances
+2.delete nat gateway
+3.Public Route table -> edit route table -> remove IGW
+4.Detach from VPC and delete IGW
+5.delete vpc
+6.Release elastic ip
 
 
 
